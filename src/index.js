@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import 'antd/dist/antd.css';
+import { Button, Input, Layout,Row, Col} from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import ListItem from './App';
 
-var myFlag = true;
-var myDebug = false;
-
+const { Header, Footer, Sider, Content } = Layout;
 
 class ToDoList extends React.Component {
   constructor(){
@@ -24,23 +25,16 @@ class ToDoList extends React.Component {
 
   addItem(){
     if(this.state.input === ''){
-      if(myDebug) alert(this.state.list.length);
       return 
     } else {
-      if(myDebug) alert('come in else');
       const oldList = this.state.list;
-      if(myDebug) alert("oldList succeed");
       const newItem = {name : this.state.input, isCompleted: false};
-      if(myDebug) alert("newList succeed");
       oldList.push(newItem);
       const newList = oldList
-      if(myDebug) alert("push succeed");
       this.setState({
           list: newList,
           input: ''
       });
-      if(myDebug) alert(newList);
-      if(myDebug) alert(this.state.list.length);
     }
   }
 
@@ -57,7 +51,6 @@ class ToDoList extends React.Component {
     );
     this.setState({
       list: newList,
-//        input: ''
     });
   }
 
@@ -77,7 +70,6 @@ class ToDoList extends React.Component {
     )
     this.setState({
       list: newList,
-//        input: ''
     });
   }
 
@@ -89,22 +81,25 @@ class ToDoList extends React.Component {
 
   render(){
     return (
-      <div className="ToDoList">
-        <header>
-          <input type={"text"} value={this.state.input} onChange={this.handleChange.bind(this)} placeholder="Add task"></input>
-          <button className = "add item" onClick={this.addItem.bind(this)}>Add</button>
-        </header>
-        <footer>
+      <Layout  className="ToDoList" style = {{background:"white" ,color:'white'}}>
+        <Header style = {{background:"white" ,color:'white' ,width:"35%", margin: "0 auto"}}>
+          <Input type={"text"}  value={this.state.input} onChange={this.handleChange.bind(this)} style={{ width: '75%' }} onPressEnter={this.addItem.bind(this)} placeholder="Add task"></Input>
+          <Button type="primary" shape='round' size='middle' icon={<PlusOutlined />} style={{marginLeft:15}}  onClick={this.addItem.bind(this)}>Add</Button>
+        </Header>
+        <Content>
+        <Row justify="center">
+          <Col >
           <ListItem data = {this.state.list} delete = {this.delete.bind(this)} complete = {this.complete.bind(this)}/>
-        </footer>
-      </div>
+          </Col>
+        </Row>
+        </Content>
+      </Layout>
     );
   }
 
 
 }
-
-
+ 
 ReactDOM.render(
   <ToDoList />,
   document.getElementById('root')
